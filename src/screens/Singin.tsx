@@ -3,6 +3,7 @@ import { Center, Heading, Image, Text, VStack } from "native-base";
 import BackgroundImg from '@assets/background.png'
 import LogoSvg from '@assets/logo.svg'
 import { Input } from "@components/input";
+import { Button } from "@components/Buton";
 
 
 export function SingIn() {
@@ -48,6 +49,10 @@ export function SingIn() {
                 <Input 
                     placeholder="Senha"
                     secureTextEntry
+                />
+
+                <Button 
+                    title="Acessar"
                 />
 
 
