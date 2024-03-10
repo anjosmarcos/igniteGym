@@ -58,6 +58,11 @@ export function SingIn() {
 
             </Center>
 
+            <Button 
+                    title="Criar conta"
+                    variant="outline"
+                />
+
 
         </VStack>
     )
