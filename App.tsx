@@ -4,7 +4,7 @@ import { NativeBaseProvider } from 'native-base';
 
 import { Loading } from '@components/Loading';
 import {THEME} from './src/theme';
-import { SingIn } from '@screens/Singin';
+import { SingUp } from '@screens/SingUp';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -19,7 +19,7 @@ export default function App() {
         backgroundColor="#202024"
         translucent
       />
-     {fontsLoaded ? <SingIn /> : <Loading />}
+     {fontsLoaded ? <SingUp /> : <Loading />}
     </NativeBaseProvider>
   )
 }

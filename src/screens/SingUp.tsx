@@ -2,13 +2,13 @@ import { Center, Heading, Image, ScrollView, Text, VStack } from "native-base";
 
 import BackgroundImg from '@assets/background.png'
 import LogoSvg from '@assets/logo.svg'
-import { Input } from "@components/input";
 import { Button } from "@components/Buton";
+import { Input } from "@components/Input";
 
 
-export function SingIn() {
+export function SingUp() {
     return (
-        <ScrollView contentContainerStyle={{flexGrow: 1}} showsVerticalScrollIndicator={false} >
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false} >
             <VStack flex={1} bg="gray.700" px={10} pb={16}>
                 <Image
                     source={BackgroundImg}
@@ -56,24 +56,17 @@ export function SingIn() {
                         title="Acessar"
                     />
 
-
-                </Center>
-
-                <Center mt={24}>
-                    <Text
-                        color="gray.100"
-                        fontSize="sm"
-                        mt={3}
-                        fontFamily="body"
-                    >
-                        Ainda não tenho acesso
-                    </Text>
-
                     <Button
-                        title="Criar conta"
+                        title="Voltar para o login"
                         variant="outline"
+                        mt={24}
                     />
+
                 </Center>
+
+
+
+
 
             </VStack>
         </ScrollView>
