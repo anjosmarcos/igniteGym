@@ -4,9 +4,17 @@ import BackgroundImg from '@assets/background.png'
 import LogoSvg from '@assets/logo.svg'
 import { Button } from "@components/Buton";
 import { Input } from "@components/Input";
+import { useNavigation } from "@react-navigation/native";
 
 
 export function SingUp() {
+    const navigation =useNavigation()
+
+    function handleGoBack(){
+        navigation.goBack()
+    }
+
+
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false} >
             <VStack flex={1} px={10} pb={16}>
@@ -60,6 +68,7 @@ export function SingUp() {
                         title="Voltar para o login"
                         variant="outline"
                         mt={24}
+                        onPress={handleGoBack}
                     />
 
                 </Center>
