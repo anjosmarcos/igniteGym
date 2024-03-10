@@ -2,14 +2,14 @@ import { Center, Heading, Image, ScrollView, Text, VStack } from "native-base";
 
 import BackgroundImg from '@assets/background.png'
 import LogoSvg from '@assets/logo.svg'
-import { Input } from "@components/input";
 import { Button } from "@components/Buton";
+import { Input } from "@components/Input";
 
 
 export function SingIn() {
     return (
         <ScrollView contentContainerStyle={{flexGrow: 1}} showsVerticalScrollIndicator={false} >
-            <VStack flex={1} bg="gray.700" px={10} pb={16}>
+            <VStack flex={1} px={10} pb={16}>
                 <Image
                     source={BackgroundImg}
                     alt="Pessoas treinando"
