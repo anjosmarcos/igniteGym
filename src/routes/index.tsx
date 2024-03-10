@@ -1,7 +1,8 @@
 import { DefaultTheme, NavigationContainer} from "@react-navigation/native";
-import { AuthRouthes } from "./auth.routes";
 import { useTheme, Box } from "native-base";
+
 import { AppRoutes } from "./app.routes";
+import { AuthRouthes } from "./auth.routes";
 
 
 export function Routes(){

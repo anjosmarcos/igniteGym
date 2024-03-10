@@ -1,10 +1,9 @@
-import { Center } from "native-base";
-import { Text } from "react-native";
+import { Center, Text } from "native-base";
 
 export function Profile(){
     return(
         <Center flex={1}>
-            <Text>Profile</Text>
+            <Text color="white" >Profile</Text>
         </Center>
     )
 }

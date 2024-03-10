@@ -9,7 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes"
 
 export function SingIn() {
-    const navigation =useNavigation<AuthNavigatorRoutesProps>()
+    const navigation = useNavigation<AuthNavigatorRoutesProps>()
 
     function handleNewAccount(){
         navigation.navigate("SingUp")

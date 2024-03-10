@@ -1,10 +1,9 @@
-import { Center } from "native-base";
-import { Text } from "react-native";
+import { Center, Text } from "native-base";
 
 export function Home(){
     return(
         <Center flex={1}>
-            <Text>Home</Text>
+            <Text color="white" >Home</Text>
         </Center>
     )
 }
