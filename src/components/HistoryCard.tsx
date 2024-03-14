@@ -19,11 +19,13 @@ export function HistoryCard({name}: Props) {
         >
             <VStack
                 mr={5}
+                flex={1}
             >
                 <Heading
                     color="white"
                     fontSize="md"
                     textTransform="capitalize"
+                    numberOfLines={1}
                 >
                     Costa
                 </Heading>

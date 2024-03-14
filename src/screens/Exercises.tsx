@@ -1,4 +1,4 @@
-import { Box, HStack, Heading, Icon, Image, Text, VStack } from "native-base";
+import { Box, HStack, Heading, Icon, Image, ScrollView, Text, VStack } from "native-base";
 import { TouchableOpacity } from "react-native";
 import { Feather } from "@expo/vector-icons"
 import { useNavigation } from "@react-navigation/native";
@@ -20,6 +20,7 @@ export function Exercises() {
 
     return (
         <VStack flex={1}>
+
             <VStack
                 px={8}
                 pt={12}
@@ -49,6 +50,7 @@ export function Exercises() {
                     >
                         Puxada Frontal
                     </Heading>
+
                     <HStack alignItems="center">
                         <BodySvg />
                         <Text
@@ -62,50 +64,52 @@ export function Exercises() {
                 </HStack>
             </VStack>
 
-            <VStack p={8}>
-                <Image
-                    w="full"
-                    h={80}
-                    source={{ uri: 'https://blog.sardinhaevolution.com.br/wp-content/uploads/2020/04/remada-unilateral.2.jpg' }}
-                    alt="Remanda unilateral"
-                    mb={3}
-                    resizeMode="cover"
-                    rounded="lg"
-                />
-                <Box
-                    bg="gray.600"
-                    pb={4}
-                    px={4}
-                    rounded="md"
-                >
-                    <HStack
-                        alignItems="center"
-                        justifyContent="space-between"
-                        mb={6}
-                        mt={6}
-                    >
-
-                        <HStack>
-                            <SeriesSVG />
-                            <Text color="gray.200" ml="2">
-                                3 séries
-                            </Text>
-                        </HStack>
-                        <HStack>
-                            <RepetitionsSvg />
-                            <Text color="gray.200" ml="2">
-                                12 repetições
-                            </Text>
-                        </HStack>
-                    </HStack>
-
-                    <Button
-                        title="Marcar como realizado"
-                        onPress={() => { }}
+            <ScrollView>
+                <VStack p={8}>
+                    <Image
+                        w="full"
+                        h={80}
+                        source={{ uri: 'https://blog.sardinhaevolution.com.br/wp-content/uploads/2020/04/remada-unilateral.2.jpg' }}
+                        alt="Remanda unilateral"
+                        mb={3}
+                        resizeMode="cover"
+                        rounded="lg"
                     />
-                </Box>
+                    <Box
+                        bg="gray.600"
+                        pb={4}
+                        px={4}
+                        rounded="md"
+                    >
+                        <HStack
+                            alignItems="center"
+                            justifyContent="space-between"
+                            mb={6}
+                            mt={6}
+                        >
 
-            </VStack>
+                            <HStack>
+                                <SeriesSVG />
+                                <Text color="gray.200" ml="2">
+                                    3 séries
+                                </Text>
+                            </HStack>
+                            <HStack>
+                                <RepetitionsSvg />
+                                <Text color="gray.200" ml="2">
+                                    12 repetições
+                                </Text>
+                            </HStack>
+                        </HStack>
+
+                        <Button
+                            title="Marcar como realizado"
+                            onPress={() => { }}
+                        />
+                    </Box>
+                </VStack>
+            </ScrollView>
+
         </VStack>
     )
 }
