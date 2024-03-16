@@ -26,6 +26,7 @@ export function HistoryCard({name}: Props) {
                     fontSize="md"
                     textTransform="capitalize"
                     numberOfLines={1}
+                    fontFamily='heading'
                 >
                     Costa
                 </Heading>

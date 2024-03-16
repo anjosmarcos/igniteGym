@@ -14,7 +14,7 @@ type FormDataProps = {
     name: string;
     email: string;
     password: string;
-    confirmPassword: string;
+    confirmPassword?: string;
 }
 
 const singUpSchema = yup.object({
@@ -146,7 +146,7 @@ export function SingUp() {
                     <Button
                         title="Voltar para o login"
                         variant="outline"
-                        mt={24}
+                        mt={16}
                         onPress={handleGoBack}
                     />
 

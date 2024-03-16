@@ -29,6 +29,7 @@ export function HomeHeder() {
             <Heading
                 color="gray.100"
                 fontSize="md"
+                fontFamily="heading"
             >
                 Marcos
             </Heading>
