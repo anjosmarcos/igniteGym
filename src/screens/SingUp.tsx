@@ -77,19 +77,23 @@ export function SingUp() {
                                 keyboardType="default"
                                 onChangeText={onChange}
                                 value={value}
+                                errorMessage={errors.name?.message}
+                                
                             />
                         )}
                     />
-                    <Text 
-                        color="white"
-                    
-                    >
-                        {errors.name?.message}
-                    </Text>
+                   
 
                     <Controller
                         control={control}
                         name="email"
+                        rules={{
+                            required: "Insira seu e-mail",
+                            pattern: {
+                                value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                message: "Insira um e-mail válido"
+                            }
+                        }}
                         render={({ field: { onChange, value } }) => (
                             <Input
                                 placeholder="E-mail"
@@ -97,10 +101,11 @@ export function SingUp() {
                                 autoCapitalize="none"
                                 onChangeText={onChange}
                                 value={value}
+                                errorMessage={errors.email?.message}
                             />
                         )}
                     />
-
+                    
                     <Controller
                         control={control}
                         name="password"
@@ -113,6 +118,7 @@ export function SingUp() {
                             />
                         )}
                     />
+                   
 
                     <Controller
                         control={control}
