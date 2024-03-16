@@ -6,22 +6,26 @@ import { Button } from "@components/Buton";
 import { Input } from "@components/Input";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 
+type FormDataProps = {
+    name: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+}
 
 export function SingUp() {
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
+    const { control, handleSubmit, formState: {errors} } = useForm<FormDataProps>()
 
-    const navigation =useNavigation()
+    const navigation = useNavigation()
 
-    function handleGoBack(){
+    function handleGoBack() {
         navigation.goBack()
     }
 
-    function handleSingUp(){
-        console.log([name, email, password, confirmPassword])
+    function handleSingUp({name, email, password, confirmPassword}: FormDataProps) {
+        console.log({name, email, password, confirmPassword})
     }
 
 
@@ -61,31 +65,73 @@ export function SingUp() {
                         Acesse sua conta
                     </Heading>
 
-                    <Input
-                        placeholder="Nome completo"
-                        keyboardType="default"
-                        onChangeText={setName}
+                    <Controller
+                        control={control}
+                        name="name"
+                        rules={{
+                            required: "Insira seu nome"
+                        }}
+                        render={({ field: { onChange, value } }) => (
+                            <Input
+                                placeholder="Nome completo"
+                                keyboardType="default"
+                                onChangeText={onChange}
+                                value={value}
+                            />
+                        )}
                     />
-                     <Input
-                        placeholder="E-mail"
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                        onChangeText={setEmail}
+                    <Text 
+                        color="white"
+                    
+                    >
+                        {errors.name?.message}
+                    </Text>
+
+                    <Controller
+                        control={control}
+                        name="email"
+                        render={({ field: { onChange, value } }) => (
+                            <Input
+                                placeholder="E-mail"
+                                keyboardType="email-address"
+                                autoCapitalize="none"
+                                onChangeText={onChange}
+                                value={value}
+                            />
+                        )}
                     />
-                    <Input
-                        placeholder="Senha"
-                        secureTextEntry
-                        onChangeText={setPassword}
+
+                    <Controller
+                        control={control}
+                        name="password"
+                        render={({ field: { onChange, value } }) => (
+                            <Input
+                                placeholder="Senha"
+                                secureTextEntry
+                                onChangeText={onChange}
+                                value={value}
+                            />
+                        )}
                     />
-                    <Input
-                        placeholder="Confirmar a senha"
-                        secureTextEntry
-                        onChangeText={setConfirmPassword}
+
+                    <Controller
+                        control={control}
+                        name="confirmPassword"
+                        render={({ field: { onChange, value } }) => (
+                            <Input
+                                placeholder="Confirmar a senha"
+                                secureTextEntry
+                                onChangeText={onChange}
+                                value={value}
+                                onSubmitEditing={handleSubmit(handleSingUp)}
+                                returnKeyType="send"
+                            />
+                        )}
                     />
 
                     <Button
                         title="Acessar"
-                        onPress={handleSingUp}
+                        onPress={handleSubmit(handleSingUp)}
                     />
 
                     <Button
@@ -93,7 +139,6 @@ export function SingUp() {
                         variant="outline"
                         mt={24}
                         onPress={handleGoBack}
-
                     />
 
                 </Center>
