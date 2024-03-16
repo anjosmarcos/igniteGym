@@ -21,7 +21,7 @@ const singUpSchema = yup.object({
     name: yup.string().required('Informe o nome'),
     email: yup.string().required('Informe o email').email('Email inválido'),
     password: yup.string().required('Informe o senha').min(6, 'A senha deve ter no mínimo 6 caracteres'),
-    confirmPassword: yup.string().oneOf([yup.ref('password')], 'As senhas devem ser iguais')
+    confirmPassword: yup.string().oneOf([, yup.ref('password')], 'As senhas devem ser iguais')
 })
 
 export function SingUp() {
