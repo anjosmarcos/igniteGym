@@ -7,6 +7,8 @@ import { Input } from "@components/Input";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 type FormDataProps = {
     name: string;
@@ -15,8 +17,17 @@ type FormDataProps = {
     confirmPassword: string;
 }
 
+const singUpSchema = yup.object({
+    name: yup.string().required('Informe o nome'),
+    email: yup.string().required('Informe o email').email('Email inválido'),
+    password: yup.string().required('Informe o senha').min(6, 'A senha deve ter no mínimo 6 caracteres'),
+    confirmPassword: yup.string().oneOf([yup.ref('password')], 'As senhas devem ser iguais')
+})
+
 export function SingUp() {
-    const { control, handleSubmit, formState: {errors} } = useForm<FormDataProps>()
+    const { control, handleSubmit, formState: {errors} } = useForm<FormDataProps>({
+        resolver: yupResolver(singUpSchema)
+    })
 
     const navigation = useNavigation()
 
@@ -68,9 +79,6 @@ export function SingUp() {
                     <Controller
                         control={control}
                         name="name"
-                        rules={{
-                            required: "Insira seu nome"
-                        }}
                         render={({ field: { onChange, value } }) => (
                             <Input
                                 placeholder="Nome completo"
@@ -87,13 +95,6 @@ export function SingUp() {
                     <Controller
                         control={control}
                         name="email"
-                        rules={{
-                            required: "Insira seu e-mail",
-                            pattern: {
-                                value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                                message: "Insira um e-mail válido"
-                            }
-                        }}
                         render={({ field: { onChange, value } }) => (
                             <Input
                                 placeholder="E-mail"
@@ -115,6 +116,7 @@ export function SingUp() {
                                 secureTextEntry
                                 onChangeText={onChange}
                                 value={value}
+                                errorMessage={errors.password?.message}
                             />
                         )}
                     />
@@ -131,6 +133,7 @@ export function SingUp() {
                                 value={value}
                                 onSubmitEditing={handleSubmit(handleSingUp)}
                                 returnKeyType="send"
+                                errorMessage={errors.confirmPassword?.message}
                             />
                         )}
                     />
@@ -148,10 +151,6 @@ export function SingUp() {
                     />
 
                 </Center>
-
-
-
-
 
             </VStack>
         </ScrollView>
