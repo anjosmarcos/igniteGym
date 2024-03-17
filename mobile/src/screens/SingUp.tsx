@@ -1,15 +1,15 @@
-import { Center, Heading, Image, ScrollView, Text, VStack } from "native-base";
+import { Center, Heading, Image, ScrollView, Text, VStack, useToast } from "native-base";
 
 import BackgroundImg from '@assets/background.png'
 import LogoSvg from '@assets/logo.svg'
 import { Button } from "@components/Buton";
 import { Input } from "@components/Input";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { api } from "@services/api";
+import { AppError } from "@utils/appError";
 
 type FormDataProps = {
     name: string;
@@ -26,40 +26,37 @@ const singUpSchema = yup.object({
 })
 
 export function SingUp() {
-    const { control, handleSubmit, formState: {errors} } = useForm<FormDataProps>({
+    const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
         resolver: yupResolver(singUpSchema)
     })
 
     const navigation = useNavigation()
 
+    const toast = useToast()
+
     function handleGoBack() {
         navigation.goBack()
     }
 
-    async function handleSingUp({name, email, password}: FormDataProps) {
-        const response =  await api.post('/users' , { 
-            name,
-            email,
-            password
-        })
-        console.log(response.data)
-
-       /* const response = await fetch('http://192.168.1.108:3333/users', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
+    async function handleSingUp({ name, email, password }: FormDataProps) {
+        try {
+            const response = await api.post('/users', {
                 name,
                 email,
                 password
             })
-        })
-        const data = await response.json()
-        console.log(data)
-        */
+        } catch (error) {
+          const isAppError = error instanceof AppError
+          const title = isAppError ? error.message: 'Não foi possivel criar sua conta, tente novamente mais tarde.'
+
+          toast.show({
+            title,
+            placement: 'top',
+            bgColor:'red.500'
+          })
+
         }
+    }
 
 
     return (
@@ -108,11 +105,11 @@ export function SingUp() {
                                 onChangeText={onChange}
                                 value={value}
                                 errorMessage={errors.name?.message}
-                                
+
                             />
                         )}
                     />
-                   
+
 
                     <Controller
                         control={control}
@@ -128,7 +125,7 @@ export function SingUp() {
                             />
                         )}
                     />
-                    
+
                     <Controller
                         control={control}
                         name="password"
@@ -142,7 +139,7 @@ export function SingUp() {
                             />
                         )}
                     />
-                   
+
 
                     <Controller
                         control={control}
