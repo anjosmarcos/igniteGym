@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { api } from "@services/api";
 
 type FormDataProps = {
     name: string;
@@ -35,9 +36,30 @@ export function SingUp() {
         navigation.goBack()
     }
 
-    function handleSingUp({name, email, password, confirmPassword}: FormDataProps) {
-        console.log({name, email, password, confirmPassword})
-    }
+    async function handleSingUp({name, email, password}: FormDataProps) {
+        const response =  await api.post('/users' , { 
+            name,
+            email,
+            password
+        })
+        console.log(response.data)
+
+       /* const response = await fetch('http://192.168.1.108:3333/users', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name,
+                email,
+                password
+            })
+        })
+        const data = await response.json()
+        console.log(data)
+        */
+        }
 
 
     return (
@@ -73,7 +95,7 @@ export function SingUp() {
                         fontFamily="heading"
                         mb={6}
                     >
-                        Acesse sua conta
+                        Criar uma conta
                     </Heading>
 
                     <Controller
@@ -139,7 +161,7 @@ export function SingUp() {
                     />
 
                     <Button
-                        title="Acessar"
+                        title="Criar e Acessar"
                         onPress={handleSubmit(handleSingUp)}
                     />
 
