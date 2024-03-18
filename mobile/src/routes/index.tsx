@@ -3,15 +3,15 @@ import { useTheme, Box } from "native-base";
 
 import { AppRoutes } from "./app.routes";
 import { AuthRouthes } from "./auth.routes";
-import { AuthContext } from "@contexts/AuthContext";
+import { useAuth } from "@hooks/useAuth";
 import { useContext } from "react";
 
 
 export function Routes(){
     const { colors } = useTheme()
+    const { user } = useAuth()
     
-    const contextData = useContext( AuthContext )
-    console.log(contextData)
+    console.log('User Logado =>>', user)
 
 
     const theme = DefaultTheme

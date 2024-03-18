@@ -16,7 +16,7 @@ export function AuthContextProvider({ children }: AuthContentProviderProps) {
         <AuthContext.Provider value={{
             user: {
                 id: '1',
-                name: 'Marcos',
+                name: 'Marcos Alexandre',
                 email: 'marcos@gmail.com',
                 avatar: 'marcos.png'
             }
