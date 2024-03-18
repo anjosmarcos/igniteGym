@@ -3,6 +3,7 @@ import { createContext, useState } from "react";
 
 export type AuthContentDataProps = {
     user: UserDTO;
+    signIn: (email: string, password: string) => void
 }
 
 type AuthContentProviderProps = {
@@ -18,8 +19,18 @@ export function AuthContextProvider({ children }: AuthContentProviderProps) {
         email: 'marcos@gmail.com',
         avatar: 'marcos.png'
     })
+
+    function signIn(email: string, password: string){
+        setUser({
+            id: '',
+            name: '',
+            email, 
+            avatar: ''
+        })  
+    }
+
     return (
-        <AuthContext.Provider value={{ user: user }}>
+        <AuthContext.Provider value={{ user, signIn }}>
             {children}
         </AuthContext.Provider>
     )
