@@ -12,6 +12,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Controller, useForm } from "react-hook-form";
 import { useAuth } from "@hooks/useAuth";
 import { AppError } from "@utils/appError";
+import { useState } from "react";
 
 type FormDataProps = {
     email: string;
@@ -25,6 +26,7 @@ const singInSchema = yup.object({
 })
 
 export function SingIn() {
+    const [isLoading, setIsLoading] = useState(false)
     const {signIn} = useAuth()
 
     const toast = useToast()
@@ -40,11 +42,16 @@ export function SingIn() {
 
     async function handleAcess({ email, password }: FormDataProps) {
        try {
+        setIsLoading(true)
         await signIn(email, password)
+        
+
        } catch (error) {
         const isAppError = error instanceof AppError
         const title = isAppError ? error.message : 'Não foi possivel entrar sua conta, tente novamente mais tarde.'
 
+        setIsLoading(false) 
+        
         toast.show({
             title,
             placement: 'top',
@@ -123,6 +130,7 @@ export function SingIn() {
                     <Button
                         title="Acessar"
                         onPress={handleSubmit(handleAcess)}
+                        isLoading={isLoading}
                     />
 
 
