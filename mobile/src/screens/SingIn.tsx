@@ -1,4 +1,4 @@
-import { Center, Heading, Image, ScrollView, Text, VStack } from "native-base";
+import { Center, Heading, Image, ScrollView, Text, VStack, useToast } from "native-base";
 
 import BackgroundImg from '@assets/background.png'
 import LogoSvg from '@assets/logo.svg'
@@ -11,6 +11,7 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Controller, useForm } from "react-hook-form";
 import { useAuth } from "@hooks/useAuth";
+import { AppError } from "@utils/appError";
 
 type FormDataProps = {
     email: string;
@@ -26,6 +27,8 @@ const singInSchema = yup.object({
 export function SingIn() {
     const {signIn} = useAuth()
 
+    const toast = useToast()
+
     const navigation = useNavigation<AuthNavigatorRoutesProps>()
     const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
         resolver: yupResolver(singInSchema)
@@ -35,8 +38,20 @@ export function SingIn() {
         navigation.navigate("SingUp")
     }
 
-    function handleAcess({ email, password }: FormDataProps) {
-       signIn(email, password)
+    async function handleAcess({ email, password }: FormDataProps) {
+       try {
+        await signIn(email, password)
+       } catch (error) {
+        const isAppError = error instanceof AppError
+        const title = isAppError ? error.message : 'Não foi possivel entrar sua conta, tente novamente mais tarde.'
+
+        toast.show({
+            title,
+            placement: 'top',
+            bgColor:'red.500'
+        })
+
+       }
     }
 
     return (

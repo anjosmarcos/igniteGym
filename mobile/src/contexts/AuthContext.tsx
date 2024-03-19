@@ -27,7 +27,6 @@ export function AuthContextProvider({ children }: AuthContentProviderProps) {
         catch (error) {
             throw error
         }
-
     }
 
     return (
