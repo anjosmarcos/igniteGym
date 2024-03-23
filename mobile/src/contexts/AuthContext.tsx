@@ -3,7 +3,7 @@ import { api } from "@services/api";
 import { createContext, useEffect, useState } from "react";
 
 import { storageUserGet, storageUserRemove, storageUserSave } from "@storage/storageUser"
-import { storageAuthTokenGet, storageAuthTokenSave } from "@storage/storageAuthToken";
+import { storageAuthTokenGet, storageAuthTokenRemove, storageAuthTokenSave } from "@storage/storageAuthToken";
 
 export type AuthContentDataProps = {
     user: UserDTO;
@@ -68,6 +68,7 @@ export function AuthContextProvider({ children }: AuthContentProviderProps) {
             setUser({} as UserDTO)
 
             await storageUserRemove()
+            await storageAuthTokenRemove()
 
         } catch (error) {
             throw error
