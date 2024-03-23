@@ -3,6 +3,7 @@ import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 
 import { Entypo } from '@expo/vector-icons'
 import { exerciciesDTO } from "@dtos/ExercisesDTO";
+import { api } from "@services/api";
 
 type Props = TouchableOpacityProps & {
     data: exerciciesDTO;
@@ -22,7 +23,7 @@ export function ExerciciesCard({data, ...rest}: Props){
                 mb={3}
             >
                 <Image
-                    source={{uri: 'https://blog.sardinhaevolution.com.br/wp-content/uploads/2020/04/remada-unilateral.2.jpg'}}
+                    source={{uri: `${api.defaults.baseURL}/exercise/thumb/${data.thumb}` }}
                     alt="Remanda unilateral"
                     w={16}
                     h={16}

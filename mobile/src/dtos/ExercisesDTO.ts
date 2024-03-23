@@ -6,5 +6,5 @@ export type exerciciesDTO = {
     repetitions: string,
     series: number,
     thumb: string
-    updated_at: string
+    updated_at: string;
 }
