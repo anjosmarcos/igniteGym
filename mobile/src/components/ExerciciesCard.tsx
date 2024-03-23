@@ -1,4 +1,4 @@
-import { HStack, Heading, Icon, Image, Text, VStack } from "native-base";
+import { Box, HStack, Heading, Icon, Image, Text, VStack } from "native-base";
 import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 
 import { Entypo } from '@expo/vector-icons'
@@ -9,8 +9,8 @@ type Props = TouchableOpacityProps & {
     data: exerciciesDTO;
 }
 
-export function ExerciciesCard({data, ...rest}: Props){
-    return(
+export function ExerciciesCard({ data, ...rest }: Props) {
+    return (
         <TouchableOpacity
             {...rest}
         >
@@ -22,8 +22,9 @@ export function ExerciciesCard({data, ...rest}: Props){
                 rounded="md"
                 mb={3}
             >
+
                 <Image
-                    source={{uri: `${api.defaults.baseURL}/exercise/thumb/${data.thumb}` }}
+                    source={{ uri: `${api.defaults.baseURL}/exercise/thumb/${data.thumb}` }}
                     alt="Remanda unilateral"
                     w={16}
                     h={16}
@@ -40,10 +41,10 @@ export function ExerciciesCard({data, ...rest}: Props){
                         {data.name}
                     </Heading>
                     <Text
-                    fontSize="sm"
-                    color="gray.200"
-                    mt={1}
-                    numberOfLines={2}
+                        fontSize="sm"
+                        color="gray.200"
+                        mt={1}
+                        numberOfLines={2}
                     >
                         {data.series} séries de {data.repetitions} repetição
                     </Text>
@@ -52,7 +53,7 @@ export function ExerciciesCard({data, ...rest}: Props){
 
 
                 <Icon
-                    as={Entypo} 
+                    as={Entypo}
                     name="chevron-thin-right"
                     color="gray.300"
                 />

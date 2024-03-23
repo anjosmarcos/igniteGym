@@ -106,15 +106,20 @@ export function Exercises() {
             {isLoading ? <Loading /> :
                 <ScrollView>
                     <VStack p={8}>
-                        <Image
-                            w="full"
-                            h={80}
-                            source={{ uri: `${api.defaults.baseURL}/exercise/demo/${exercise.demo}` }}
-                            alt="Remanda unilateral"
-                            mb={3}
-                            resizeMode="cover"
+                        <Box
                             rounded="lg"
-                        />
+                            mb={3}
+                            overflow="hidden"
+                        >
+                            <Image
+                                w="full"
+                                h={80}
+                                source={{ uri: `${api.defaults.baseURL}/exercise/demo/${exercise.demo}` }}
+                                alt="Remanda unilateral"
+                                resizeMode="cover"
+                                rounded="lg"
+                            />
+                        </Box>
                         <Box
                             bg="gray.600"
                             pb={4}
@@ -131,13 +136,13 @@ export function Exercises() {
                                 <HStack>
                                     <SeriesSVG />
                                     <Text color="gray.200" ml="2">
-                                        3 séries
+                                        {exercise.series} séries
                                     </Text>
                                 </HStack>
                                 <HStack>
                                     <RepetitionsSvg />
                                     <Text color="gray.200" ml="2">
-                                        12 repetições
+                                        {exercise.repetitions} repetições
                                     </Text>
                                 </HStack>
                             </HStack>
