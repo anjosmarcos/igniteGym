@@ -20,8 +20,8 @@ export function Home() {
 
     const navigation = useNavigation<AppNavigationProps>()
 
-    function handleOpenExercisesDetails() {
-        navigation.navigate('exercises')
+    function handleOpenExercisesDetails(exerciseId: string) {
+        navigation.navigate('exercises', {exerciseId})
     }
 
     async function fetchGroups() {
@@ -62,6 +62,8 @@ export function Home() {
             setIsLoading(false)
         }
     }
+
+
 
     useFocusEffect(useCallback(() => {
         fetchExercisesGroups()
@@ -127,7 +129,7 @@ export function Home() {
                             renderItem={({ item }) => (
                                 <ExerciciesCard
                                     data={item}
-                                    onPress={() => handleOpenExercisesDetails()}
+                                    onPress={() => handleOpenExercisesDetails(item.id)}
                                 />
                             )}
                         />
