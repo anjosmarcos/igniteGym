@@ -4,11 +4,10 @@ import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 import { Entypo } from '@expo/vector-icons'
 
 type Props = TouchableOpacityProps & {
-    name: string;
     isActive?: boolean;
 }
 
-export function ExerciciesCard({name, ...rest}: Props){
+export function ExerciciesCard({...rest}: Props){
     return(
         <TouchableOpacity
             {...rest}
@@ -36,7 +35,7 @@ export function ExerciciesCard({name, ...rest}: Props){
                         fontSize="sm"
                         color="white"
                     >
-                        {name}
+                        Exercicios
                     </Heading>
                     <Text
                     fontSize="sm"
