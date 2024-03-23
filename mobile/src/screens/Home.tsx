@@ -118,9 +118,9 @@ export function Home() {
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => (
                         <ExerciciesCard
+                            data={item}
                             onPress={() => handleOpenExercisesDetails()}
                         />
-
                     )}
                 />
             </VStack>
