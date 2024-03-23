@@ -12,7 +12,7 @@ import { useCallback, useEffect, useState } from "react";
 
 export function Home() {
     const [groups, setGroups] = useState<string[]>([])
-    const [grupSelected, setGroupSelected] = useState('costa')
+    const [grupSelected, setGroupSelected] = useState('antebraço')
     const [exercicies, setExercicies] = useState<exerciciesDTO[]>([])
     const [isLoading, setIsLoading] = useState(true)
 
