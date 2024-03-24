@@ -12,6 +12,7 @@ import { Controller, useForm } from "react-hook-form";
 
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useAuth } from "@hooks/useAuth";
 
 
 const PHOTO_SIZE = 33
@@ -33,11 +34,18 @@ const profileSchema = yup.object({
 })
 
 
+
 export function Profile() {
     const [photoIsLoading, setPhotoIsLoading] = useState(false)
+    const { user } = useAuth()
     const [userPhoto, setUserPhoto] = useState('https://github.com/anjosmarcos.png')
 
     const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
+        defaultValues: {
+            name: user.name,
+            email: user.email
+
+        },
         resolver: yupResolver(profileSchema)
     })
 
@@ -138,12 +146,22 @@ export function Profile() {
                         )}
                     />
 
-
-                    <Input
-                        value="E-mail"
-                        bg="gray.600"
-                        isDisabled
+                    <Controller
+                        control={control}
+                        name="email"
+                        render={({ field: { onChange, value } }) => (
+                            <Input
+                                placeholder="E-mail"
+                                bg="gray.600"
+                                onChangeText={onChange}
+                                value={value}
+                                errorMessage={errors.name?.message}
+                                isDisabled
+                            />
+                        )}
                     />
+
+
 
                 </Center>
 
@@ -153,10 +171,10 @@ export function Profile() {
                     </Heading>
 
                     <Input
-                                value="E-mail"
-                                bg="gray.600"
-                                isDisabled
-                            />
+                        value="Senha Antiga"
+                        bg="gray.600"
+                        isDisabled
+                    />
 
                     <Controller
                         control={control}
