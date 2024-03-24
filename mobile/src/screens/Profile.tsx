@@ -20,7 +20,7 @@ const PHOTO_SIZE = 33
 type FormDataProps = {
     name: string,
     email: string,
-    currentPassword: string,
+    oldPassword: string,
     newPassword: string,
     confirmPassword?: string
 }
@@ -28,7 +28,7 @@ type FormDataProps = {
 const profileSchema = yup.object({
     name: yup.string().required('Informe o nome'),
     email: yup.string().required('Informe o email').email('Email inválido'),
-    currentPassword: yup.string().required('Informe a senha atual'),
+    oldPassword: yup.string().required('Informe a senha atual'),
     newPassword: yup.string().required('Informe a nova senha').min(6, 'A senha deve ter no mínimo 6 caracteres'),
     confirmPassword: yup.string().oneOf([, yup.ref('newPassword')], 'As senhas devem ser iguais')
 })
@@ -85,8 +85,8 @@ export function Profile() {
         }
     }
 
-    function handleSubmitSuccess({ name, email, currentPassword, newPassword, confirmPassword }: FormDataProps) {
-        console.log({ name, email, currentPassword, newPassword, confirmPassword })
+    function handleSubmitSuccess({ name, email, oldPassword, newPassword, confirmPassword }: FormDataProps) {
+        console.log({ name, email, oldPassword, newPassword, confirmPassword })
     }
 
     return (
@@ -169,11 +169,19 @@ export function Profile() {
                     <Heading color="gray.200" fontSize="md" fontFamily='heading' mb={2} alignSelf="flex-start" mt={12}>
                         Alerar senha
                     </Heading>
-
-                    <Input
-                        value="Senha Antiga"
-                        bg="gray.600"
-                        isDisabled
+                    <Controller
+                        control={control}
+                        name="oldPassword"
+                        render={({ field: { onChange, value } }) => (
+                            <Input
+                                placeholder="Senha"
+                                bg="gray.600"
+                                onChangeText={onChange}
+                                value="Senha Antiga"
+                                errorMessage={errors.name?.message}
+                                isDisabled
+                            />
+                        )}
                     />
 
                     <Controller
