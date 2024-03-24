@@ -13,6 +13,8 @@ import { Controller, useForm } from "react-hook-form";
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useAuth } from "@hooks/useAuth";
+import { api } from "@services/api";
+import { AppError } from "@utils/appError";
 
 
 const PHOTO_SIZE = 33
@@ -20,31 +22,38 @@ const PHOTO_SIZE = 33
 type FormDataProps = {
     name: string,
     email: string,
-    oldPassword: string,
-    newPassword: string,
-    confirmPassword?: string
+    password: string,
+    old_password: string,
+    confirm_password: string
 }
 
 const profileSchema = yup.object({
     name: yup.string().required('Informe o nome'),
-    email: yup.string().required('Informe o email').email('Email inválido'),
-    oldPassword: yup.string().required('Informe a senha atual'),
-    newPassword: yup.string().required('Informe a nova senha').min(6, 'A senha deve ter no mínimo 6 caracteres'),
-    confirmPassword: yup.string().oneOf([, yup.ref('newPassword')], 'As senhas devem ser iguais')
+    password: yup.string().required('Informe a nova senha').min(6, 'A senha deve ter no mínimo 6 caracteres').nullable().transform((value) => !!value ? value : null),
+    confirm_password: yup
+        .string()
+        .nullable()
+        .transform((value) => (!!value ? value : null))
+        .oneOf([yup.ref('password'), null], 'As senhas devem ser iguais.')
+        .when('password', {
+            is: (Field: any) => Field,
+            then: (schema) =>
+                schema.nullable().required('Informe a confirmação da senha.').transform((value) => !!value ? value : null),
+        }),
 })
 
 
 
 export function Profile() {
+    const [isUpDate, setIsUpDate] = useState(false)
     const [photoIsLoading, setPhotoIsLoading] = useState(false)
-    const { user } = useAuth()
+    const { user, updateUserProfile } = useAuth()
     const [userPhoto, setUserPhoto] = useState('https://github.com/anjosmarcos.png')
 
     const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
         defaultValues: {
             name: user.name,
             email: user.email
-
         },
         resolver: yupResolver(profileSchema)
     })
@@ -85,8 +94,36 @@ export function Profile() {
         }
     }
 
-    function handleSubmitSuccess({ name, email, oldPassword, newPassword, confirmPassword }: FormDataProps) {
-        console.log({ name, email, oldPassword, newPassword, confirmPassword })
+    async function handleProfileUpdate(data: FormDataProps) {
+        try {
+            setIsUpDate(true);
+
+            const userUpdated = user;
+            userUpdated.name = data.name;
+
+            await api.put('/users', data);
+            
+            // await updateUserProfile({ ...user, name: data.name })
+            await updateUserProfile(userUpdated);
+
+            toast.show({
+                title: 'Perfil atualizado com sucesso!',
+                placement: 'top',
+                bgColor: 'green.500'
+            });
+
+        } catch (error) {
+            const isAppError = error instanceof AppError;
+            const title = isAppError ? error.message : 'Não foi possível atualizar os dados. Tente novamente mais tarde.';
+
+            toast.show({
+                title,
+                placement: 'top',
+                bgColor: 'red.500'
+            })
+        } finally {
+            setIsUpDate(false);
+        }
     }
 
     return (
@@ -155,7 +192,6 @@ export function Profile() {
                                 bg="gray.600"
                                 onChangeText={onChange}
                                 value={value}
-                                errorMessage={errors.name?.message}
                                 isDisabled
                             />
                         )}
@@ -171,22 +207,21 @@ export function Profile() {
                     </Heading>
                     <Controller
                         control={control}
-                        name="oldPassword"
+                        name="old_password"
                         render={({ field: { onChange, value } }) => (
                             <Input
                                 placeholder="Senha"
                                 bg="gray.600"
                                 onChangeText={onChange}
-                                value="Senha Antiga"
-                                errorMessage={errors.name?.message}
-                                isDisabled
+                                value={value}
+                                secureTextEntry
                             />
                         )}
                     />
 
                     <Controller
                         control={control}
-                        name="newPassword"
+                        name="password"
                         render={({ field: { onChange, value } }) => (
                             <Input
                                 placeholder="Nova senha"
@@ -194,14 +229,15 @@ export function Profile() {
                                 secureTextEntry
                                 onChangeText={onChange}
                                 value={value}
-                                errorMessage={errors.newPassword?.message}
+                                errorMessage={errors.password?.message}
+                                defaultValue=''
                             />
                         )}
                     />
 
                     <Controller
                         control={control}
-                        name="confirmPassword"
+                        name="confirm_password"
                         render={({ field: { onChange, value } }) => (
                             <Input
                                 placeholder="Comfirme senha"
@@ -209,7 +245,8 @@ export function Profile() {
                                 secureTextEntry
                                 onChangeText={onChange}
                                 value={value}
-                                errorMessage={errors.confirmPassword?.message}
+                                errorMessage={errors.confirm_password?.message}
+                                defaultValue=''
                             />
                         )}
                     />
@@ -218,7 +255,8 @@ export function Profile() {
                     <Button
                         title="Atualizar"
                         mt={4}
-                        onPress={handleSubmit(handleSubmitSuccess)}
+                        onPress={handleSubmit(handleProfileUpdate)}
+                        isLoading={isUpDate}
                     />
                 </VStack>
             </ScrollView>

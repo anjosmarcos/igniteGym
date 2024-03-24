@@ -4,10 +4,12 @@ import { createContext, useEffect, useState } from "react";
 
 import { storageUserGet, storageUserRemove, storageUserSave } from "@storage/storageUser"
 import { storageAuthTokenGet, storageAuthTokenRemove, storageAuthTokenSave } from "@storage/storageAuthToken";
+import { useRoute } from "@react-navigation/native";
 
 export type AuthContentDataProps = {
     user: UserDTO;
     signIn: (email: string, password: string) => Promise<void>;
+    updateUserProfile: (userUpDate: UserDTO) => Promise<void>;
     isLoadingStorageData: boolean
     signOut: () => Promise<void>;
 }
@@ -17,8 +19,6 @@ type AuthContentProviderProps = {
 }
 
 export const AuthContext = createContext<AuthContentDataProps>({} as AuthContentDataProps)
-
-
 
 export function AuthContextProvider({ children }: AuthContentProviderProps) {
     const [user, setUser] = useState({} as UserDTO)
@@ -77,6 +77,15 @@ export function AuthContextProvider({ children }: AuthContentProviderProps) {
         }
     }
 
+    async function updateUserProfile(userUpDate: UserDTO) {
+        try {
+            setUser(userUpDate)
+            await storageUserSave(userUpDate)
+        } catch (error) {
+            throw error
+        }
+    }
+
     async function loadUserData() {
         try {
             setIsLoadingStorageData(true)
@@ -99,7 +108,7 @@ export function AuthContextProvider({ children }: AuthContentProviderProps) {
     }, [])
 
     return (
-        <AuthContext.Provider value={{ user, signIn, isLoadingStorageData, signOut }}>
+        <AuthContext.Provider value={{ user, signIn, isLoadingStorageData, signOut, updateUserProfile }}>
             {children}
         </AuthContext.Provider>
     )
