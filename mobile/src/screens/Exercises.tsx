@@ -21,6 +21,7 @@ type RouteParamsProps = {
 export function Exercises() {
     const [isLoading, setIsLoading] = useState(true)
     const [exercise, setExercise] = useState<exerciciesDTO>({} as exerciciesDTO)
+    const [sendingRegister, setSendingRegister] = useState(false)
     const navigation = useNavigation<AppNavigationProps>()
     const route = useRoute()
 
@@ -49,6 +50,33 @@ export function Exercises() {
             })
         } finally {
             setIsLoading(false)
+        }
+    }
+
+    async function handleExercisesHistoryRegister() {
+        try {
+            setSendingRegister(true)
+            await api.post(`/history`, { exercise_id: exerciseId })
+
+            toast.show({
+                title: 'Exercicio registrado com sucesso.',
+                placement: 'top',
+                bgColor: 'green.700'
+            })
+
+            navigation.navigate('history')
+
+        } catch (error) {
+            const isAppError = error instanceof AppError
+            const title = isAppError ? error.message : 'Não foi possivel registrar o exercicio.'
+
+            toast.show({
+                title,
+                placement: 'top',
+                bgColor: 'red.500'
+            })
+        } finally {
+            setSendingRegister(false)
         }
     }
 
@@ -149,7 +177,8 @@ export function Exercises() {
 
                             <Button
                                 title="Marcar como realizado"
-                                onPress={() => { }}
+                                isLoading={sendingRegister}
+                                onPress={handleExercisesHistoryRegister}
                             />
                         </Box>
                     </VStack>
