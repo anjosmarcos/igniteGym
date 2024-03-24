@@ -2,10 +2,10 @@ import { HStack, Heading, Text, VStack } from "native-base";
 import { ScreenHeader } from "./ScreenHeader";
 
 type Props = {
-    name: string;
+    
 }
 
-export function HistoryCard({name}: Props) {
+export function HistoryCard({}: Props) {
     return (
         <HStack
             w="full"
@@ -35,7 +35,7 @@ export function HistoryCard({name}: Props) {
                     fontSize="lg"
                     numberOfLines={1}
                 >
-                    {name}
+                    Exercicio
                 </Text>
             </VStack>
             <Text
