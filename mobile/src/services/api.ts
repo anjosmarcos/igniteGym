@@ -37,7 +37,11 @@ api.registerInterceptTokenManager = singOut => {
                     return new Promise((resolve, reject) => {
                         failedQueued.push({
                             onSuccess: (token: string) => {
-                                originalRequestConfig.headers = { 'Authorization': `Bearer ${token}` };
+                                originalRequestConfig.headers = {
+                                    ...originalRequestConfig.headers,
+                                    Authorization: `Bearer ${token}`
+                                }
+                                // ...originalRequestConfig.headers = { 'Authorization': `Bearer ${token}` };
                                 resolve(api(originalRequestConfig));
                             },
                             onFailure: (error: AxiosError) => {
@@ -53,11 +57,17 @@ api.registerInterceptTokenManager = singOut => {
 
                         await storageAuthTokenSave({ token: data.token, refresh_token: data.refresh_token });
 
-                        if (originalRequestConfig.data) {
+                        if (
+                            originalRequestConfig.data && 
+                            !(originalRequestConfig.data instanceof FormData)
+                            ) {
                             originalRequestConfig.data = JSON.parse(originalRequestConfig.data);
                         }
 
-                        originalRequestConfig.headers = { 'Authorization': `Bearer ${data.token}` };
+                        originalRequestConfig.headers = {
+                            ...originalRequestConfig.headers,
+                            Authorization: `Bearer ${data.token}`
+                        }
                         api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
 
                         failedQueued.forEach(request => {

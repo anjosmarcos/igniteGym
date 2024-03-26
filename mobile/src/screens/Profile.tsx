@@ -18,7 +18,6 @@ import { AppError } from "@utils/appError";
 import defaultUserPhoto from '@assets/userPhotoDefault.png'
 
 
-
 const PHOTO_SIZE = 33
 
 type FormDataProps = {
@@ -47,8 +46,6 @@ const profileSchema = yup.object({
                 schema.nullable().required('Informe a confirmação da senha.').transform((value) => !!value ? value : null),
         }),
 })
-
-
 
 export function Profile() {
     const [isUpDate, setIsUpDate] = useState(false)
