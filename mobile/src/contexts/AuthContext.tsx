@@ -91,7 +91,7 @@ export function AuthContextProvider({ children }: AuthContentProviderProps) {
             const userLogged = await storageUserGet()
             const { token } = await storageAuthTokenGet()
 
-            if (userLogged && token) {
+            if (token && userLogged) {
                 userAndTokenUpdate(userLogged, token)
             }
         } catch (error) {
@@ -108,8 +108,10 @@ export function AuthContextProvider({ children }: AuthContentProviderProps) {
     useEffect(() => {
         const subscribe = api.registerInterceptTokenManager(signOut)
 
-        return () => subscribe()
-    }, []);
+        return () => {
+            subscribe()
+        }
+    }, [signOut]);
 
     return (
         <AuthContext.Provider value={{ user, signIn, isLoadingStorageData, signOut, updateUserProfile }}>
