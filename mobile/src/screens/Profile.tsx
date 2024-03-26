@@ -15,6 +15,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useAuth } from "@hooks/useAuth";
 import { api } from "@services/api";
 import { AppError } from "@utils/appError";
+import defaultUserPhoto from '@assets/userPhotoDefault.png'
+
 
 
 const PHOTO_SIZE = 33
@@ -29,7 +31,11 @@ type FormDataProps = {
 
 const profileSchema = yup.object({
     name: yup.string().required('Informe o nome'),
-    password: yup.string().required('Informe a nova senha').min(6, 'A senha deve ter no mínimo 6 caracteres').nullable().transform((value) => !!value ? value : null),
+    password: yup
+        .string()
+        .min(6, 'A senha deve ter no mínimo 6 caracteres')
+        .nullable()
+        .transform((value) => !!value ? value : null),
     confirm_password: yup
         .string()
         .nullable()
@@ -48,7 +54,6 @@ export function Profile() {
     const [isUpDate, setIsUpDate] = useState(false)
     const [photoIsLoading, setPhotoIsLoading] = useState(false)
     const { user, updateUserProfile } = useAuth()
-    const [userPhoto, setUserPhoto] = useState('https://github.com/anjosmarcos.png')
 
     const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
         defaultValues: {
@@ -84,7 +89,32 @@ export function Profile() {
                     })
                 }
 
-                setUserPhoto(photoSelect.assets[0].uri)
+                const fileExtension = photoSelect.assets[0].uri.split('.').pop()
+
+                const photoFile = {
+                    name: `${user.name}.${fileExtension}`.toLocaleLowerCase(),
+                    uri: photoSelect.assets[0].uri,
+                    type: `${photoSelect.assets[0].type}/${fileExtension}`
+                } as any;
+
+                const userPhotoUploadForm = new FormData()
+                userPhotoUploadForm.append('avatar', photoFile)
+
+                const avatarUpdateResponse =  await api.patch('/users/avatar', userPhotoUploadForm, {
+                    headers: {
+                        'Content-Type':'multipart/form-data'
+                    }
+                })
+
+                const userUpDatated = user
+                userUpDatated.avatar = avatarUpdateResponse.data.avatar
+                await updateUserProfile(userUpDatated)
+
+                toast.show({
+                    title: 'Foto atualizada com sucesso.',
+                    placement: 'top',
+                    bgColor: 'green.500'
+                })
             }
 
         } catch (error) {
@@ -149,7 +179,9 @@ export function Profile() {
                                 endColor="gray.400"
                             /> :
                             <UserPhoto
-                                source={{ uri: userPhoto }}
+                                source={ user.avatar 
+                                    ? {uri: `${api.defaults.baseURL}/avatar/${user.avatar}`} 
+                                    : defaultUserPhoto}
                                 alt="Foto do usuário"
                                 size={PHOTO_SIZE}
                             />
