@@ -1,4 +1,4 @@
-import { storageAuthTokenGet } from "@storage/storageAuthToken";
+import { storageAuthTokenGet, storageAuthTokenSave } from "@storage/storageAuthToken";
 import { AppError } from "@utils/appError";
 import axios, { AxiosError, AxiosInstance } from "axios";
 
@@ -50,6 +50,27 @@ api.registerInterceptTokenManager = signOut => {
                 }
 
                 isRefreshing = true
+
+                return new Promise(async(resolve, reject) => {
+                    try {
+                        const {data} = await api.post('/sessions/refresh-token', {refresh_token}) 
+                        await storageAuthTokenSave({
+                            token: data.token,
+                            refresh_token: data.refresh_token
+                        })
+
+                    } catch (error: any) {
+                        failedQueue.forEach(request => {
+                            request.onFailure(error)
+                        })
+
+                        signOut()
+                        return reject(error)
+                    } finally {
+                        isRefreshing = false
+                        failedQueue = []
+                    }
+                })
             }
 
             signOut()
